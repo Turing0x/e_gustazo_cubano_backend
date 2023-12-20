@@ -22,16 +22,17 @@ async function getProductById (req: Request, res: Response) {
 
 async function saveProduct (req: Request, res: Response) {
   
-  const { name, description, photo, price, inStock, commission, discount } = req.body;
+  const { name, description, photo, price, inStock, commission, discount, more_than } = req.body;
 
   const Product = new ProductModel({
     name,
     description,
-    photo,
+    photo: photo ?? '',
     price,
     in_stock: inStock,
     commission,
-    discount
+    discount,
+    more_than
   });
 
   await Product.save();
@@ -42,7 +43,7 @@ async function saveProduct (req: Request, res: Response) {
 
 async function editProduct (req: Request, res: Response) {
   
-  const { name, description, photo, price, inStock, commission, discount } = req.body;
+  const { name, description, photo, price, inStock, commission, discount, more_than } = req.body;
   const { productId } = req.params;
 
   const product = await ProductModel.findById(productId)
@@ -56,6 +57,7 @@ async function editProduct (req: Request, res: Response) {
     in_stock: inStock ?? product.in_stock,
     commission: commission ?? product.commission,
     discount: discount ?? product.discount,
+    more_than: more_than ?? product.more_than,
   };
 
   await ProductModel.findByIdAndUpdate(productId, product_obj)

@@ -8,7 +8,7 @@ import { goodResponse, badResponse } from '../../../helpers/send.res';
 
 async function getAllUsers(req: Request, res: Response) {
   const users = (await UserModel.find())
-    .filter(e => e.role !== 'ADMIN');
+    .filter(e => e.role !== 'admin');
   return goodResponse(res, 'crud_mess_0', users)
 }
 
@@ -26,9 +26,9 @@ async function getUserById (req: Request, res: Response) {
 
 async function saveUser (req: Request, res: Response) {
   
-  const { username, password } = req.body;
+  const { username, password, full_name } = req.body;
 
-  if (!username || !password)
+  if (!username || !password || !full_name)
     return badResponse(res, 'crud_mess_2');
 
   if (await UserModel.findOne({ username })) {
@@ -40,6 +40,7 @@ async function saveUser (req: Request, res: Response) {
 
   const user = new UserModel({
     username,
+    full_name,
     password: hashPassword,
     role: 'commercial',
     referal_code
@@ -69,6 +70,8 @@ async function sign(req: Request, res: Response) {
 
   return goodResponse(res, 'server_mess_3', {
     userID: user._id,
+    fullName: user.full_name,
+    referalCode: user.referal_code,
     token,
     role: user.role.toLocaleLowerCase()
   });

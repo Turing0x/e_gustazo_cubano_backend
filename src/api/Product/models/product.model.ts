@@ -5,8 +5,6 @@ export type Product = {
   price: number;
   in_stock: number;
   commission: number;
-  discount: {
-    more_than: number,
-    discount: number,
-  };
+  more_than: number,
+  discount: number,
 }
