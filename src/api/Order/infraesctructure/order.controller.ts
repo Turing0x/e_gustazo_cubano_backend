@@ -4,26 +4,34 @@ import { OrderModel } from '../domain/order.models';
 import { goodResponse, badResponse } from '../../../helpers/send.res';
 
 async function getAllOrders(req: Request, res: Response) {
-  const orders = (await OrderModel.find()).filter(order => 
-    order.finish === true);
-  return goodResponse(res, 'crud_mess_0', orders)
+  try {
+    const orders = (await OrderModel.find()).filter(order => 
+      order.finish === true);
+    return goodResponse(res, 'crud_mess_0', orders)
+  } catch (error) { return badResponse(res, 'mess_0', error.message) }
 }
 
 async function getAllRequested(req: Request, res: Response) {
-  const orders = (await OrderModel.find()).filter(order => 
-    order.finish === false);
-  return goodResponse(res, 'crud_mess_0', orders)
+  try {
+    const orders = (await OrderModel.find()).filter(order => 
+      order.finish === false);
+    return goodResponse(res, 'crud_mess_0', orders)
+  } catch (error) { return badResponse(res, 'mess_0', error.message) }
 }
 
-async function getOrderById (req: Request, res: Response) {
+async function getOrderById(req: Request, res: Response) {
   
-  const { orderId } = req.params;
-  if( !orderId ) return badResponse(res, 'mess_1'); 
+  try {
 
-  const order = await OrderModel.findById(orderId);
-  if (!order) return badResponse(res, 'crud_mess_8'); 
+    const { orderId } = req.params;
+    if( !orderId ) return badResponse(res, 'order_mess_7'); 
   
-  return goodResponse(res, 'crud_mess_0', order);
+    const order = await OrderModel.findById(orderId);
+    if (!order) return badResponse(res, 'order_mess_7'); 
+    
+    return goodResponse(res, 'crud_mess_0', order);
+    
+  } catch (error) { return badResponse(res, 'order_mess_7', error.message) }
 
 }
 
@@ -43,9 +51,9 @@ async function saveOrder(req: Request, res: Response) {
   
     await Order.save();
   
-    return goodResponse(res, 'crud_mess_1');
+    return goodResponse(res, 'order_mess_1');
     
-  } catch (error) { return badResponse(res, 'mess_0') }
+  } catch (error) { return badResponse(res, 'order_mess_2') }
 
 }
 
@@ -53,26 +61,30 @@ async function markAsFinished(req: Request, res: Response) {
 
   try {
     
-    const { orderId, invoice_number } = req.params
+    const { orderId, invoiceNumber: invoice_number } = req.params
 
     await OrderModel.findOneAndUpdate({ _id: orderId }, {
       $set: { finish: true, invoice_number }
     })
 
-    return goodResponse(res, 'crud_mess_3_0')
+    return goodResponse(res, 'order_mess_8')
     
   } catch (error) { return badResponse(res, 'mess_0') }
 
 }
 
-async function deleteOrderById (req: Request, res: Response) {
+async function deleteOrderById(req: Request, res: Response) {
   
-  const { orderId } = req.params;
-  if( !orderId ) return badResponse(res, 'mess_1'); 
+  try {
 
-  await OrderModel.deleteOne({ _id: orderId })
+    const { orderId } = req.params;
+    if( !orderId ) return badResponse(res, 'order_mess_7'); 
   
-  return goodResponse(res, 'crud_mess_5', '');
+    await OrderModel.deleteOne({ _id: orderId })
+    
+    return goodResponse(res, 'order_mess_5', '');
+    
+  } catch (error) { return badResponse(res, 'order_mess_6') }
 
 }
 

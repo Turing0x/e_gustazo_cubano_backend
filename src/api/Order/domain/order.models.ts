@@ -8,7 +8,8 @@ const OrderSchema = new mongoose.Schema({
   },
   invoice_number: {
     type: String,
-    require: false
+    require: false,
+    default: ''
   },
   date: {
     type: String,

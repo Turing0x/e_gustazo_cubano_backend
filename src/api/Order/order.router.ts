@@ -12,7 +12,7 @@ router
 
   .post('/', OrderControllers.saveOrder)
 
-  .put('/:orderId', OrderControllers.markAsFinished)
+  .put('/:orderId/:invoiceNumber', OrderControllers.markAsFinished)
 
   .delete('/:orderId', OrderControllers.deleteOrderById)
 

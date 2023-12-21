@@ -18,22 +18,33 @@ export const MESSAGES = {
   // Respuestas del CRUD
   crud_mess_0: 'Datos obtenidos según la petición',
 
-  crud_mess_1: 'Usuario creado exitosamente',
-  crud_mess_2: 'No se pudo crear el usuario',
+  user_mess_1: 'Usuario creado exitosamente',
+  user_mess_2: 'No se pudo crear el usuario',
+  user_mess_3: 'Usuario editado exitosamente',
+  user_mess_4: 'No se pudo editar el usuario',
+  user_mess_5: 'Usuario eliminado exitosamente',
+  user_mess_6: 'No se pudo eliminar el usuario',
+  user_mess_7: 'Ya existe un usuario con ese nombre',
+  user_mess_8: 'El usuario no ha sido encontrado',
+  user_mess_9: 'La constraseña ha sido restablecida',
+  user_mess_10: 'No se pudo restablecer la contraseña',
 
-  crud_mess_3: 'Usuario editado exitosamente',
-  crud_mess_4: 'No se pudo editar el usuario',
+  order_mess_1: 'La orden ha sido creada exitosamente',
+  order_mess_2: 'No se pudo crear la orden',
+  order_mess_3: 'La orden ha sido editada exitosamente',
+  order_mess_4: 'No se pudo editar la orden',
+  order_mess_5: 'La orden ha sido eliminada exitosamente',
+  order_mess_6: 'No se pudo eliminar la orden',
+  order_mess_7: 'La orden no ha sido encontrada',
+  order_mess_8: 'La orden fue marcada con entregada',
 
-  crud_mess_5: 'Usuario eliminado exitosamente',
-  crud_mess_6: 'No se pudo eliminar el usuario',
-
-  crud_mess_7: 'Ya existe un usuario con ese nombre',
-  crud_mess_8: 'El usuario no ha sido encontrado',
-
-  crud_mess_9: 'La contraseña fue cambiada exitosamente',
-  crud_mess_10: 'No se pudo cambiar la contraseña',
-
-  crud_mess_11: 'El pago fue registrado correctamente',
-
+  product_mess_1: 'El producto ha sido registrado exitosamente',
+  product_mess_2: 'No se pudo registrar el producto',
+  product_mess_3: 'El producto ha sido editado exitosamente',
+  product_mess_4: 'No se pudo editar el producto',
+  product_mess_5: 'El producto ha sido eliminado exitosamente',
+  product_mess_6: 'No se pudo eliminar el producto',
+  product_mess_7: 'Ya existe un producto con ese nombre',
+  product_mess_8: 'El producto no ha sido encontrado',
 
 }
