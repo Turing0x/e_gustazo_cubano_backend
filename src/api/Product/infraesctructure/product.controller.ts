@@ -5,7 +5,8 @@ import { goodResponse, badResponse } from '../../../helpers/send.res';
 
 async function getAllProducts(req: Request, res: Response) {
   try {
-    const products = await ProductModel.find();
+    const products = (await ProductModel.find())
+      .filter( product => product.in_stock !== 0 );
     return goodResponse(res, 'crud_mess_0', products)
   } catch (error) { return badResponse(res, 'mess_0', error.message) }
 }

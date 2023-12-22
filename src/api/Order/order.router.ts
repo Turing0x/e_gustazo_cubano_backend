@@ -6,7 +6,7 @@ const router = Router()
 
 router
 
-  .get('/', OrderControllers.getAllOrders)
+  .get('/:date', OrderControllers.getAllOrders)
   .get('/pending', OrderControllers.getAllRequested)
   .get('/:orderId', OrderControllers.getOrderById)
 
