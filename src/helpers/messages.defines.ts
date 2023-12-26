@@ -37,6 +37,7 @@ export const MESSAGES = {
   order_mess_6: 'No se pudo eliminar la orden',
   order_mess_7: 'La orden no ha sido encontrada',
   order_mess_8: 'La orden fue marcada con entregada',
+  order_mess_9: 'El carrito de la compra ha sido editado correctamente',
 
   product_mess_1: 'El producto ha sido registrado exitosamente',
   product_mess_2: 'No se pudo registrar el producto',

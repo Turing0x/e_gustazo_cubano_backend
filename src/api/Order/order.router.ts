@@ -7,11 +7,12 @@ const router = Router()
 router
 
   .get('/:date', OrderControllers.getAllOrders)
-  .get('/pending', OrderControllers.getAllRequested)
-  .get('/:orderId', OrderControllers.getOrderById)
+  .get('/getById/:orderId', OrderControllers.getOrderById)
+  .get('/pending/:date', OrderControllers.getAllRequested)
 
   .post('/', OrderControllers.saveOrder)
 
+  .put('/:orderId', OrderControllers.editProductList)
   .put('/:orderId/:invoiceNumber', OrderControllers.markAsFinished)
 
   .delete('/:orderId', OrderControllers.deleteOrderById)

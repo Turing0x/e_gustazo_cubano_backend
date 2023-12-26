@@ -31,14 +31,14 @@ async function saveProduct(req: Request, res: Response) {
   
   try {
 
-    const { name, description, photo, price, inStock, commission, discount, more_than } = req.body;
+    const { name, description, photo, price, in_stock, commission, discount, more_than } = req.body;
   
     const Product = new ProductModel({
       name,
       description,
       photo: photo ?? '',
       price,
-      in_stock: inStock,
+      in_stock,
       commission,
       discount,
       more_than

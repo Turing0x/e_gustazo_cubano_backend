@@ -20,8 +20,13 @@ async function getAllOrders(req: Request, res: Response) {
 
 async function getAllRequested(req: Request, res: Response) {
   try {
+
+    const { date } = req.params
+    const formatedDate = convertDate(date);
+
     const orders = (await OrderModel.find()).filter(order => 
-      order.finish === false);
+      (order.finish === false) && (order.date.split(' ')[0] === formatedDate));
+    
     return goodResponse(res, 'crud_mess_0', orders)
   } catch (error) { return badResponse(res, 'mess_0', error.message) }
 }
@@ -46,13 +51,13 @@ async function saveOrder(req: Request, res: Response) {
   
   try {
     
-    const { date, product_list, total_amount, commision, seller } = req.body;
+    const { date, product_list, total_amount, commission, seller } = req.body;
 
     const Order = new OrderModel({
       date,
       product_list,
       total_amount,
-      commision,
+      commission,
       seller
     });
 
@@ -81,6 +86,23 @@ async function markAsFinished(req: Request, res: Response) {
 
 }
 
+async function editProductList(req: Request, res: Response) {
+  
+  try {
+
+    const { product_list } = req.body
+    const orderId = req.params.orderId
+
+    await OrderModel.findOneAndUpdate({ _id: orderId }, {
+      $set: {product_list}
+    })
+
+    return goodResponse(res, 'order_mess_9')
+
+  } catch (error) { return badResponse(res, 'mess_0', error.message) }
+
+}
+
 async function deleteOrderById(req: Request, res: Response) {
   
   try {
@@ -101,9 +123,9 @@ async function deleteOrderById(req: Request, res: Response) {
 
 async function subtractStockOfProducts(product_list: [object]) {
   for (const product of product_list) {
-    const getter = await ProductModel.findById(product['producId']);
+    const getter = await ProductModel.findById(product['_id']);
     if (getter) {
-      await ProductModel.findByIdAndUpdate(product['producId'],
+      await ProductModel.findByIdAndUpdate(product['_id'],
         { $set: { in_stock: getter.in_stock - product['cantToBuy'] } },
       );
     } 
@@ -136,6 +158,7 @@ function convertDate(incomingDate: string): string {
 }
 
 export const OrderControllers = {
+  editProductList,
   deleteOrderById,
   getAllRequested,
   markAsFinished,

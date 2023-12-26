@@ -6,7 +6,7 @@ export type Order = {
   date: string,
   invoice_number: string,
   total_amount: number,
-  commision: number,
+  commission: number,
   seller: {
     full_name: string
     referal_code: string

@@ -23,7 +23,7 @@ const OrderSchema = new mongoose.Schema({
     type: Number,
     require: false
   },
-  commision: {
+  commission: {
     type: Number,
     require: true,
   },
