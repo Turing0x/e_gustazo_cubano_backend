@@ -31,6 +31,32 @@ async function getAllRequested(req: Request, res: Response) {
   } catch (error) { return badResponse(res, 'mess_0', error.message) }
 }
 
+async function getRequestedByCommercial(req: Request, res: Response) {
+  try {
+
+    const { date, referalCode } = req.params
+    const formatedDate = convertDate(date);
+
+    const orders = (await OrderModel.find({'seller.referalCode': referalCode})).filter(order => 
+      (order.finish === false) && (order.date.split(' ')[0] === formatedDate));
+    
+    return goodResponse(res, 'crud_mess_0', orders)
+  } catch (error) { return badResponse(res, 'mess_0', error.message) }
+}
+
+async function getOrdersByCommercial(req: Request, res: Response) {
+  try {
+
+    const { date, referalCode } = req.params
+    const formatedDate = convertDate(date);
+
+    const orders = (await OrderModel.find({'seller.referalCode': referalCode})).filter(order => 
+      (order.finish === true) && (order.date.split(' ')[0] === formatedDate));
+    
+    return goodResponse(res, 'crud_mess_0', orders)
+  } catch (error) { return badResponse(res, 'mess_0', error.message) }
+}
+
 async function getOrderById(req: Request, res: Response) {
   
   try {
@@ -134,9 +160,9 @@ async function subtractStockOfProducts(product_list: [object]) {
 
 async function addStockOfProducts(product_list: [object]) {
   for (const product of product_list) {
-    const getter = await ProductModel.findById(product['producId']);
+    const getter = await ProductModel.findById(product['_id']);
     if (getter) {
-      await ProductModel.findByIdAndUpdate(product['producId'],
+      await ProductModel.findByIdAndUpdate(product['_id'],
         { $set: { in_stock: getter.in_stock + product['cantToBuy'] } },
       );
     }
@@ -158,6 +184,8 @@ function convertDate(incomingDate: string): string {
 }
 
 export const OrderControllers = {
+  getRequestedByCommercial,
+  getOrdersByCommercial,
   editProductList,
   deleteOrderById,
   getAllRequested,
