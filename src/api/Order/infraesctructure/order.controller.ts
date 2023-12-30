@@ -1,4 +1,5 @@
 import { Response, Request } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 
 import { OrderModel } from '../domain/order.models';
 import { ProductModel } from '../../Product/domain/product.models';
@@ -73,18 +74,37 @@ async function getOrderById(req: Request, res: Response) {
 
 }
 
+async function getOrderByPendingNumber(req: Request, res: Response) {
+  
+  try {
+
+    const { pendingNumber } = req.params;
+    if( !pendingNumber ) return badResponse(res, 'order_mess_7'); 
+  
+    const order = await OrderModel.findOne({ pending_number: pendingNumber});
+    if (!order) return badResponse(res, 'order_mess_7'); 
+    
+    return goodResponse(res, 'crud_mess_0', order);
+    
+  } catch (error) { return badResponse(res, 'order_mess_7', error.message) }
+
+}
+
 async function saveOrder(req: Request, res: Response) {
   
   try {
     
-    const { date, product_list, total_amount, commission, seller } = req.body;
+    const { date, product_list, total_amount, commission, seller, buyer } = req.body;
+    const pending_number: string = uuidv4().split('-')[0].toLocaleUpperCase()
 
     const Order = new OrderModel({
       date,
+      pending_number,
       product_list,
       total_amount,
       commission,
-      seller
+      seller,
+      buyer
     });
 
     await Order.save();
@@ -185,6 +205,7 @@ function convertDate(incomingDate: string): string {
 
 export const OrderControllers = {
   getRequestedByCommercial,
+  getOrderByPendingNumber,
   getOrdersByCommercial,
   editProductList,
   deleteOrderById,

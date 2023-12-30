@@ -5,8 +5,15 @@ export type Order = {
   product_list: [Product],
   date: string,
   invoice_number: string,
+  pending_number: string,
   total_amount: number,
   commission: number,
+  buyer: {
+    full_name: string
+    ci: string
+    phone_number: string
+    address: string
+  },
   seller: {
     full_name: string
     referal_code: string
