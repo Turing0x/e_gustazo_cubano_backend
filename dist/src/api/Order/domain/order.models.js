@@ -15,6 +15,11 @@ const OrderSchema = new mongoose_1.default.Schema({
         require: false,
         default: ''
     },
+    pending_number: {
+        type: String,
+        require: false,
+        default: ''
+    },
     date: {
         type: String,
         require: true
@@ -32,6 +37,10 @@ const OrderSchema = new mongoose_1.default.Schema({
         require: true,
     },
     seller: {
+        type: Object,
+        require: true,
+    },
+    buyer: {
         type: Object,
         require: true,
     }

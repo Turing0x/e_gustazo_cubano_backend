@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderControllers = void 0;
+const uuid_1 = require("uuid");
 const order_models_1 = require("../domain/order.models");
 const product_models_1 = require("../../Product/domain/product.models");
 const send_res_1 = require("../../../helpers/send.res");
@@ -62,15 +63,32 @@ async function getOrderById(req, res) {
         return (0, send_res_1.badResponse)(res, 'order_mess_7', error.message);
     }
 }
+async function getOrderByPendingNumber(req, res) {
+    try {
+        const { pendingNumber } = req.params;
+        if (!pendingNumber)
+            return (0, send_res_1.badResponse)(res, 'order_mess_7');
+        const order = await order_models_1.OrderModel.findOne({ pending_number: pendingNumber });
+        if (!order)
+            return (0, send_res_1.badResponse)(res, 'order_mess_7');
+        return (0, send_res_1.goodResponse)(res, 'crud_mess_0', order);
+    }
+    catch (error) {
+        return (0, send_res_1.badResponse)(res, 'order_mess_7', error.message);
+    }
+}
 async function saveOrder(req, res) {
     try {
-        const { date, product_list, total_amount, commission, seller } = req.body;
+        const { date, product_list, total_amount, commission, seller, buyer } = req.body;
+        const pending_number = (0, uuid_1.v4)().split('-')[0].toLocaleUpperCase();
         const Order = new order_models_1.OrderModel({
             date,
+            pending_number,
             product_list,
             total_amount,
             commission,
-            seller
+            seller,
+            buyer
         });
         await Order.save();
         await subtractStockOfProducts(product_list);
@@ -147,6 +165,7 @@ function convertDate(incomingDate) {
 }
 exports.OrderControllers = {
     getRequestedByCommercial,
+    getOrderByPendingNumber,
     getOrdersByCommercial,
     editProductList,
     deleteOrderById,
