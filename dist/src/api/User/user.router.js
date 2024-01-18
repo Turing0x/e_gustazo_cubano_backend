@@ -7,6 +7,7 @@ const router = (0, express_1.Router)();
 router
     .get('/', user_controller_1.UserControllers.getAllUsers)
     .get('/:userId', user_controller_1.UserControllers.getUserById)
+    .get('/orders/:userId', user_controller_1.UserControllers.getCommisionByCommercial)
     .post('/', user_controller_1.UserControllers.saveUser)
     .post('/signin', user_controller_1.UserControllers.sign)
     .post('/resetpass', user_controller_1.UserControllers.resetPassword)

@@ -31,7 +31,7 @@ async function getRequestedByCommercial(req, res) {
     try {
         const { date, commercialCode } = req.params;
         const formatedDate = convertDate(date);
-        const orders = (await order_models_1.OrderModel.find({ 'seller.commercialCode': commercialCode })).filter(order => (order.finish === false) && (order.date.split(' ')[0] === formatedDate));
+        const orders = (await order_models_1.OrderModel.find({ 'seller.commercial_code': commercialCode })).filter(order => (order.finish === false) && (order.date.split(' ')[0] === formatedDate));
         return (0, send_res_1.goodResponse)(res, 'crud_mess_0', orders);
     }
     catch (error) {
@@ -42,7 +42,7 @@ async function getOrdersByCommercial(req, res) {
     try {
         const { date, commercialCode } = req.params;
         const formatedDate = convertDate(date);
-        const orders = (await order_models_1.OrderModel.find({ 'seller.commercialCode': commercialCode })).filter(order => (order.finish === true) && (order.date.split(' ')[0] === formatedDate));
+        const orders = (await order_models_1.OrderModel.find({ 'seller.commercial_code': commercialCode })).filter(order => (order.finish === true) && (order.date.split(' ')[0] === formatedDate));
         return (0, send_res_1.goodResponse)(res, 'crud_mess_0', orders);
     }
     catch (error) {
@@ -80,7 +80,7 @@ async function getOrderByPendingNumber(req, res) {
 async function saveOrder(req, res) {
     try {
         const { date, product_list, total_amount, commission, seller, buyer } = req.body;
-        const pending_number = (0, uuid_1.v4)().split('-')[0].toLocaleUpperCase();
+        const pending_number = (0, uuid_1.v4)().split('-')[0].substring(0, 4).toLocaleUpperCase();
         const Order = new order_models_1.OrderModel({
             date,
             pending_number,

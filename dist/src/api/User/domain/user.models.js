@@ -15,10 +15,6 @@ const UserSchema = new mongoose_1.default.Schema({
         type: String,
         require: true
     },
-    full_name: {
-        type: String,
-        require: true
-    },
     password: {
         type: String,
         require: true
@@ -27,12 +23,12 @@ const UserSchema = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
-    referal_code: {
+    commercial_code: {
         type: String,
         require: false,
     },
-    shopping_history: {
-        type: Array,
+    personal_info: {
+        type: Object,
         require: false,
     }
 });
