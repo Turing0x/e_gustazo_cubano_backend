@@ -1,4 +1,5 @@
 import { Product } from "../../Product/models/product.model"
+import { User } from "../../User/models/user.model"
 
 export type Order = {
   finish: boolean,
@@ -8,14 +9,6 @@ export type Order = {
   pending_number: string,
   total_amount: number,
   commission: number,
-  buyer: {
-    full_name: string
-    ci: string
-    phone_number: string
-    address: string
-  },
-  seller: {
-    full_name: string
-    referal_code: string
-  }
+  buyer: User,
+  seller: User
 }

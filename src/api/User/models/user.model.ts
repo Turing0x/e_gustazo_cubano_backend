@@ -1,9 +1,13 @@
 export type User = {
   enable: boolean;
   username: string;
-  full_name: string;
   password: string;
   role: string;
-  referal_code: string;
-  shopping_history: [];
+  commercial_code: string;
+  personal_info: {
+    ci: string,
+    full_name: string,
+    phone: string,
+    address: string,
+  };
 }

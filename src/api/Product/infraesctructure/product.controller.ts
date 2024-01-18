@@ -60,8 +60,8 @@ async function editProduct(req: Request, res: Response) {
     const { productId } = req.params;
   
     const product = await ProductModel.findById(productId)
-    if(!product) return badResponse(res, 'product_mess_8'); 
-  
+    if (!product) return badResponse(res, 'product_mess_8'); 
+    
     const product_obj = {
       name: name ?? product.name,
       description: description ?? product.description,

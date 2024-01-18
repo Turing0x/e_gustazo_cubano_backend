@@ -8,6 +8,7 @@ router
 
   .get('/', UserControllers.getAllUsers)
   .get('/:userId', UserControllers.getUserById)
+  .get('/orders/:userId', UserControllers.getCommisionByCommercial)
 
   .post('/', UserControllers.saveUser)
   .post('/signin', UserControllers.sign)

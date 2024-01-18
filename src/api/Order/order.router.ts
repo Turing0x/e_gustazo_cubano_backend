@@ -9,8 +9,8 @@ router
   .get('/:date', OrderControllers.getAllOrders)
   .get('/getById/:orderId', OrderControllers.getOrderById)
   .get('/pending/:date', OrderControllers.getAllRequested)
-  .get('/getByComm/:referalCode/:date', OrderControllers.getRequestedByCommercial)
-  .get('/getByCommOrder/:referalCode/:date', OrderControllers.getOrdersByCommercial)
+  .get('/getByComm/:commercialCode/:date', OrderControllers.getRequestedByCommercial)
+  .get('/getByCommOrder/:commercialCode/:date', OrderControllers.getOrdersByCommercial)
 
   .post('/', OrderControllers.saveOrder)
 

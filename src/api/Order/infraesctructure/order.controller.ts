@@ -35,10 +35,10 @@ async function getAllRequested(req: Request, res: Response) {
 async function getRequestedByCommercial(req: Request, res: Response) {
   try {
 
-    const { date, referalCode } = req.params
+    const { date, commercialCode } = req.params
     const formatedDate = convertDate(date);
 
-    const orders = (await OrderModel.find({'seller.referalCode': referalCode})).filter(order => 
+    const orders = (await OrderModel.find({'seller.commercial_code': commercialCode})).filter(order => 
       (order.finish === false) && (order.date.split(' ')[0] === formatedDate));
     
     return goodResponse(res, 'crud_mess_0', orders)
@@ -48,10 +48,10 @@ async function getRequestedByCommercial(req: Request, res: Response) {
 async function getOrdersByCommercial(req: Request, res: Response) {
   try {
 
-    const { date, referalCode } = req.params
+    const { date, commercialCode } = req.params
     const formatedDate = convertDate(date);
 
-    const orders = (await OrderModel.find({'seller.referalCode': referalCode})).filter(order => 
+    const orders = (await OrderModel.find({'seller.commercial_code': commercialCode})).filter(order => 
       (order.finish === true) && (order.date.split(' ')[0] === formatedDate));
     
     return goodResponse(res, 'crud_mess_0', orders)
@@ -95,7 +95,7 @@ async function saveOrder(req: Request, res: Response) {
   try {
     
     const { date, product_list, total_amount, commission, seller, buyer } = req.body;
-    const pending_number: string = uuidv4().split('-')[0].toLocaleUpperCase()
+    const pending_number: string = uuidv4().split('-')[0].substring(0, 4).toLocaleUpperCase()
 
     const Order = new OrderModel({
       date,

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 
 import { UserModel } from '../domain/user.models';
+import { OrderModel } from '../../Order/domain/order.models';
 import { goodResponse, badResponse } from '../../../helpers/send.res';
 
 async function getAllUsers(req: Request, res: Response) {
@@ -34,28 +35,79 @@ async function getUserById (req: Request, res: Response) {
 
 }
 
+async function getCommisionByCommercial(req: Request, res: Response) {
+
+  try {
+
+    const commisionData = new Map()
+    const allObjs = []
+
+    const { userId } = req.params;
+    if( !userId ) return badResponse(res, 'mess_1'); 
+  
+    const user = await UserModel.findById(userId);
+    if (!user) return badResponse(res, 'user_mess_8'); 
+
+    const hisOrders = await OrderModel.find({
+      'seller.commercialCode': user.commercial_code
+    }).lean()
+
+    for (const order of hisOrders) {
+
+      order.product_list.forEach(product => {
+        
+        const id = product['_id']
+
+        if (!commisionData.has(id)) {
+          commisionData.set(id, {
+            name: product['name'],
+            price: product['price'],
+            commission: product['commission'],
+            cantToBuy: product['cantToBuy'],
+            date: order.date
+          })
+        } else {
+          commisionData.get(id).cantToBuy += product['cantToBuy']
+        }
+
+      })
+    }
+
+    allObjs.push(Object.fromEntries(commisionData))
+
+    return goodResponse(res, 'crud_mess_0', allObjs);
+    
+  } catch (error) { return badResponse(res, 'mess_0', error.message) }
+  
+}
+
 async function saveUser(req: Request, res: Response) {
   
   try {
 
-    const { username, password, full_name } = req.body;
+    const { fullname, ci, address, phoneNumber } = req.body;
   
-    if (!username || !password || !full_name)
-      return badResponse(res, 'mess_1');
-  
-    if (await UserModel.findOne({ username })) {
+    if (await UserModel.findOne({ 'personal_info.full_name': fullname })) {
       return badResponse(res, 'user_mess_7');
     }
-  
+
+    const password = ci.substring(6)
+    const username = `${fullname.split(' ')[0].toLowerCase()}${ci.substring(0, 2)}`
+
     const hashPassword = bcrypt.hashSync(password, 10);
-    const referal_code: string = uuidv4().split('-')[0].toLocaleUpperCase()
+    const commercial_code: string = uuidv4().split('-')[0].toLocaleUpperCase()
   
     const user = new UserModel({
       username,
-      full_name,
       password: hashPassword,
+      personal_info: {
+        ci: ci,
+        full_name: fullname,
+        address: address,
+        phone: phoneNumber
+      },
       role: 'commercial',
-      referal_code
+      commercial_code
     });
   
     await user.save();
@@ -86,8 +138,13 @@ async function sign(req: Request, res: Response) {
   
     return goodResponse(res, 'server_mess_3', {
       userID: user._id,
-      fullName: user.full_name,
-      referalCode: user.referal_code,
+      commercialCode: user.commercial_code,
+      info: {
+        ci: user.personal_info.ci,
+        full_name: user.personal_info.full_name,
+        phone: user.personal_info.phone,
+        address: user.personal_info.address
+      } ,
       token,
       role: user.role.toLocaleLowerCase()
     });
@@ -145,6 +202,7 @@ async function deleteUserById(req: Request, res: Response) {
 }
 
 export const UserControllers = {
+  getCommisionByCommercial,
   deleteUserById,
   editUserEnable,
   resetPassword,

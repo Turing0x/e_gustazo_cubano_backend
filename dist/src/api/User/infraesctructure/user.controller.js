@@ -70,7 +70,7 @@ async function sign(req, res) {
         return (0, send_res_1.goodResponse)(res, 'server_mess_3', {
             userID: user._id,
             fullName: user.full_name,
-            referalCode: user.referal_code,
+            commercialCode: user.referal_code,
             token,
             role: user.role.toLocaleLowerCase()
         });

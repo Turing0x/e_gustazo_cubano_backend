@@ -29,9 +29,9 @@ async function getAllRequested(req, res) {
 }
 async function getRequestedByCommercial(req, res) {
     try {
-        const { date, referalCode } = req.params;
+        const { date, commercialCode } = req.params;
         const formatedDate = convertDate(date);
-        const orders = (await order_models_1.OrderModel.find({ 'seller.referalCode': referalCode })).filter(order => (order.finish === false) && (order.date.split(' ')[0] === formatedDate));
+        const orders = (await order_models_1.OrderModel.find({ 'seller.commercialCode': commercialCode })).filter(order => (order.finish === false) && (order.date.split(' ')[0] === formatedDate));
         return (0, send_res_1.goodResponse)(res, 'crud_mess_0', orders);
     }
     catch (error) {
@@ -40,9 +40,9 @@ async function getRequestedByCommercial(req, res) {
 }
 async function getOrdersByCommercial(req, res) {
     try {
-        const { date, referalCode } = req.params;
+        const { date, commercialCode } = req.params;
         const formatedDate = convertDate(date);
-        const orders = (await order_models_1.OrderModel.find({ 'seller.referalCode': referalCode })).filter(order => (order.finish === true) && (order.date.split(' ')[0] === formatedDate));
+        const orders = (await order_models_1.OrderModel.find({ 'seller.commercialCode': commercialCode })).filter(order => (order.finish === true) && (order.date.split(' ')[0] === formatedDate));
         return (0, send_res_1.goodResponse)(res, 'crud_mess_0', orders);
     }
     catch (error) {
