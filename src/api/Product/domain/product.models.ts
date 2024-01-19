@@ -10,6 +10,10 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     require: false
   },
+  provider: {
+    type: String,
+    require: false
+  },
   photo: {
     type: String,
     require: true,
