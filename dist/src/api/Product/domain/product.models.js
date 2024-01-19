@@ -14,6 +14,10 @@ const ProductSchema = new mongoose_1.default.Schema({
         type: String,
         require: false
     },
+    provider: {
+        type: String,
+        require: false
+    },
     photo: {
         type: String,
         require: true,
