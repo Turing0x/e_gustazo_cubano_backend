@@ -24,6 +24,8 @@ exports.MESSAGES = {
     user_mess_8: 'El usuario no ha sido encontrado',
     user_mess_9: 'La constraseña ha sido restablecida',
     user_mess_10: 'No se pudo restablecer la contraseña',
+    user_mess_11: 'La constraseña fue cambiada correctamente',
+    user_mess_12: 'No se pudo cambiar la contraseña',
     order_mess_1: 'La orden ha sido creada exitosamente',
     order_mess_2: 'No se pudo crear la orden',
     order_mess_3: 'La orden ha sido editada exitosamente',

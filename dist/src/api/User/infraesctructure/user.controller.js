@@ -12,8 +12,7 @@ const order_models_1 = require("../../Order/domain/order.models");
 const send_res_1 = require("../../../helpers/send.res");
 async function getAllUsers(req, res) {
     try {
-        const users = (await user_models_1.UserModel.find())
-            .filter(e => e.role !== 'admin');
+        const users = (await user_models_1.UserModel.find({ role: 'commercial' }));
         return (0, send_res_1.goodResponse)(res, 'crud_mess_0', users);
     }
     catch (error) {
@@ -152,6 +151,29 @@ async function resetPassword(req, res) {
         return (0, send_res_1.badResponse)(res, 'mess_0', error.message);
     }
 }
+async function changePassword(req, res) {
+    try {
+        const { actualPass } = req.body;
+        let { newPass } = req.body;
+        const existingUser = await user_models_1.UserModel.findOne({ _id: res['userData']['user_id'] })
+            .select('password');
+        bcrypt_1.default.compare(actualPass, existingUser.password, async (err, result) => {
+            if (!result) {
+                return (0, send_res_1.badResponse)(res, 'user_mess_12', '');
+            }
+            if (err) {
+                return (0, send_res_1.badResponse)(res, 'user_mess_12', '');
+            }
+            newPass = await bcrypt_1.default.hash(newPass, 10);
+            user_models_1.UserModel.updateOne({ _id: res['userData']['user_id'] }, { $set: { password: newPass } })
+                .then(() => { return (0, send_res_1.goodResponse)(res, 'user_mess_11'); })
+                .catch((err) => { return (0, send_res_1.badResponse)(res, 'user_mess_12', err); });
+        });
+    }
+    catch (error) {
+        return (0, send_res_1.badResponse)(res, 'mess_0', error.message);
+    }
+}
 async function deleteUserById(req, res) {
     try {
         const { userId } = req.params;
@@ -168,6 +190,7 @@ exports.UserControllers = {
     getCommisionByCommercial,
     deleteUserById,
     editUserEnable,
+    changePassword,
     resetPassword,
     getUserById,
     getAllUsers,

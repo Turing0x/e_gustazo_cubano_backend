@@ -34,6 +34,10 @@ const ProductSchema = new mongoose_1.default.Schema({
         type: Number,
         require: true,
     },
+    commissionDiscount: {
+        type: Number,
+        require: true,
+    },
     more_than: {
         type: Number,
         require: false,

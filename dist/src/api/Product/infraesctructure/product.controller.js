@@ -29,7 +29,7 @@ async function getProductById(req, res) {
 }
 async function saveProduct(req, res) {
     try {
-        const { name, description, provider, photo, price, inStock: in_stock, commission, more_than, discount } = req.body;
+        const { name, description, provider, photo, price, inStock: in_stock, commission, commissionDiscount, more_than, discount } = req.body;
         const Product = new product_models_1.ProductModel({
             name,
             description,
@@ -38,6 +38,7 @@ async function saveProduct(req, res) {
             price,
             in_stock,
             commission,
+            commissionDiscount,
             discount,
             more_than
         });
@@ -50,7 +51,7 @@ async function saveProduct(req, res) {
 }
 async function editProduct(req, res) {
     try {
-        const { name, description, provider, photo, price, inStock: in_stock, commission, more_than, discount } = req.body;
+        const { name, description, provider, photo, price, inStock: in_stock, commission, commissionDiscount, more_than, discount } = req.body;
         const { productId } = req.params;
         const product = await product_models_1.ProductModel.findById(productId);
         if (!product)
@@ -63,6 +64,7 @@ async function editProduct(req, res) {
             price: price ?? product.price,
             in_stock: in_stock ?? product.in_stock,
             commission: commission ?? product.commission,
+            commissionDiscount: commissionDiscount ?? product.commissionDiscount,
             discount: discount ?? product.discount,
             more_than: more_than ?? product.more_than,
         };
