@@ -10,11 +10,8 @@ import { goodResponse, badResponse } from '../../../helpers/send.res';
 async function getAllUsers(req: Request, res: Response) {
 
   try {
-  
-    const users = (await UserModel.find())
-      .filter(e => e.role !== 'admin');
+    const users = (await UserModel.find({role: 'commercial'}))
     return goodResponse(res, 'crud_mess_0', users)
-  
   } catch (error) { return badResponse(res, 'mess_0', error.message) }
 
 }
@@ -186,6 +183,33 @@ async function resetPassword(req: Request, res: Response) {
 
 }
 
+async function changePassword(req: Request, res: Response) {
+
+  try {
+
+    const { actualPass } = req.body
+    let { newPass } = req.body
+    const existingUser = await UserModel.findOne({ _id: res['userData']['user_id'] })
+      .select('password')
+
+    bcrypt.compare(actualPass, existingUser.password, async (err, result) => {
+      if (!result) { return badResponse(res, 'user_mess_12', '') }
+
+      if (err) { return badResponse(res, 'user_mess_12', '') }
+
+      newPass = await bcrypt.hash(newPass, 10)
+
+      UserModel.updateOne({ _id: res['userData']['user_id'] }, { $set: { password: newPass } })
+        .then(() => { return goodResponse(res, 'user_mess_11') })
+        .catch((err) => { return badResponse(res, 'user_mess_12', err) })
+    })
+
+  } catch (error) {
+    return badResponse(res, 'mess_0', error.message)
+  }
+
+}
+
 async function deleteUserById(req: Request, res: Response) {
   
   try {
@@ -205,6 +229,7 @@ export const UserControllers = {
   getCommisionByCommercial,
   deleteUserById,
   editUserEnable,
+  changePassword,
   resetPassword,
   getUserById,
   getAllUsers,

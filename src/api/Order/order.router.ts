@@ -1,22 +1,23 @@
 import { Router } from 'express';
 
 import { OrderControllers } from './infraesctructure/order.controller';
+import { checkAuth } from '../../helpers/checkAuth';
 
 const router = Router()
 
 router
 
-  .get('/:date', OrderControllers.getAllOrders)
-  .get('/getById/:orderId', OrderControllers.getOrderById)
-  .get('/pending/:date', OrderControllers.getAllRequested)
-  .get('/getByComm/:commercialCode/:date', OrderControllers.getRequestedByCommercial)
-  .get('/getByCommOrder/:commercialCode/:date', OrderControllers.getOrdersByCommercial)
+  .get('/:date', checkAuth, OrderControllers.getAllOrders)
+  .get('/getById/:orderId', checkAuth, OrderControllers.getOrderById)
+  .get('/pending/:date', checkAuth, OrderControllers.getAllRequested)
+  .get('/getByComm/:commercialCode/:date', checkAuth, OrderControllers.getRequestedByCommercial)
+  .get('/getByCommOrder/:commercialCode/:date', checkAuth, OrderControllers.getOrdersByCommercial)
 
-  .post('/', OrderControllers.saveOrder)
+  .post('/', checkAuth, OrderControllers.saveOrder)
 
-  .put('/:orderId', OrderControllers.editProductList)
-  .put('/:orderId/:invoiceNumber', OrderControllers.markAsFinished)
+  .put('/:orderId', checkAuth, OrderControllers.editProductList)
+  .put('/:orderId/:invoiceNumber', checkAuth, OrderControllers.markAsFinished)
 
-  .delete('/:orderId', OrderControllers.deleteOrderById)
+  .delete('/:orderId', checkAuth, OrderControllers.deleteOrderById)
 
 export const OrderRouter = router

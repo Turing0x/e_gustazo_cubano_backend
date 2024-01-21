@@ -1,18 +1,19 @@
 import { Router } from 'express';
 
 import { ProductControllers } from './infraesctructure/product.controller';
+import { checkAuth } from '../../helpers/checkAuth';
 
 const router = Router()
 
 router
 
-  .get('/', ProductControllers.getAllProducts)
-  .get('/:productId', ProductControllers.getProductById)
+  .get('/', checkAuth, ProductControllers.getAllProducts)
+  .get('/:productId', checkAuth, ProductControllers.getProductById)
 
-  .post('/', ProductControllers.saveProduct)
+  .post('/', checkAuth, ProductControllers.saveProduct)
 
-  .put('/:productId', ProductControllers.editProduct)
+  .put('/:productId', checkAuth, ProductControllers.editProduct)
 
-  .delete('/:productId', ProductControllers.deleteProductById)
+  .delete('/:productId', checkAuth, ProductControllers.deleteProductById)
 
 export const ProductRouter = router
