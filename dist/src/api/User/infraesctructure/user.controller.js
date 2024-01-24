@@ -108,7 +108,7 @@ async function sign(req, res) {
         const compare = bcrypt_1.default.compareSync(password, user.password);
         if (!compare)
             return (0, send_res_1.badResponse)(res, 'server_mess_4');
-        const token = jsonwebtoken_1.default.sign({ username: user.username, user_id: user._id, enable: user.enable }, process.env.JWT_KEY_APP, { expiresIn: '100m' });
+        const token = jsonwebtoken_1.default.sign({ username: user.username, user_id: user._id, enable: user.enable }, process.env.JWT_KEY_APP, { expiresIn: '7d' });
         return (0, send_res_1.goodResponse)(res, 'server_mess_3', {
             userID: user._id,
             commercialCode: user.commercial_code,

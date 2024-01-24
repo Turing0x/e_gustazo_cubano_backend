@@ -26,6 +26,10 @@ const ProductSchema = new mongoose_1.default.Schema({
         type: Number,
         require: false,
     },
+    coin: {
+        type: String,
+        require: false,
+    },
     in_stock: {
         type: Number,
         require: true,

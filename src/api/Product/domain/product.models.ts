@@ -22,6 +22,10 @@ const ProductSchema = new mongoose.Schema({
     type: Number,
     require: false,
   },
+  coin: {
+    type: String,
+    require: false,
+  },
   in_stock: {
     type: Number,
     require: true,

@@ -20,7 +20,7 @@ async function checkAuth(req, res, next) {
         }
     }
     catch (error) {
-        return (0, send_res_1.badResponse)(res, 'server_mess_5', error.message);
+        return (0, send_res_1.badResponse)(res, 'server_mess_5', error.message, 401);
     }
 }
 exports.checkAuth = checkAuth;

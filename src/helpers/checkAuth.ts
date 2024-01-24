@@ -18,5 +18,5 @@ export async function checkAuth (req: Request, res: Response, next: NextFunction
       return next()
     }
 
-  } catch (error) { return badResponse(res, 'server_mess_5', error.message) }
+  } catch (error) { return badResponse(res, 'server_mess_5', error.message, 401) }
 }

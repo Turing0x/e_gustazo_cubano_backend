@@ -7,9 +7,10 @@ import { MESSAGES } from './messages.defines';
 export const badResponse = (
   res: Response,
   message: string,
-  data: any = '') => {
+  data: any = '',
+  status?: number) => {
   
-  res.status(500).json({
+  res.status(status ?? 500).json({
     api_message: MESSAGES[message],
     data
   }).end()

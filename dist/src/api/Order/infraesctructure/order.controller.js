@@ -78,25 +78,24 @@ async function getOrderByPendingNumber(req, res) {
     }
 }
 async function saveOrder(req, res) {
-    try {
-        const { date, product_list, total_amount, commission, seller, buyer } = req.body;
-        const pending_number = (0, uuid_1.v4)().split('-')[0].substring(0, 4).toLocaleUpperCase();
-        const Order = new order_models_1.OrderModel({
-            date,
-            pending_number,
-            product_list,
-            total_amount,
-            commission,
-            seller,
-            buyer
-        });
-        await Order.save();
-        await subtractStockOfProducts(product_list);
-        return (0, send_res_1.goodResponse)(res, 'order_mess_1');
-    }
-    catch (error) {
-        return (0, send_res_1.badResponse)(res, 'order_mess_2');
-    }
+    // try {
+    const { date, product_list, total_amount, commission, seller, buyer, who_pay, type_coin } = req.body;
+    const pending_number = (0, uuid_1.v4)().split('-')[0].substring(0, 4).toLocaleUpperCase();
+    const Order = new order_models_1.OrderModel({
+        date,
+        pending_number,
+        type_coin,
+        product_list,
+        total_amount,
+        commission,
+        seller,
+        buyer,
+        who_pay: who_pay ?? {}
+    });
+    await Order.save();
+    await subtractStockOfProducts(product_list);
+    return (0, send_res_1.goodResponse)(res, 'order_mess_1');
+    // } catch (error) { return badResponse(res, 'order_mess_2') }
 }
 async function markAsFinished(req, res) {
     try {
