@@ -32,7 +32,7 @@ async function saveProduct(req: Request, res: Response) {
   try {
 
     const { name, description, provider, photo,
-      price, inStock: in_stock, commission, commissionDiscount,
+      price, coin, inStock: in_stock, commission, commissionDiscount,
       more_than, discount } = req.body;
   
     const Product = new ProductModel({
@@ -41,6 +41,7 @@ async function saveProduct(req: Request, res: Response) {
       provider,
       photo: photo ?? '',
       price,
+      coin,
       in_stock,
       commission,
       commissionDiscount,
@@ -61,7 +62,7 @@ async function editProduct(req: Request, res: Response) {
   try {
     
     const { name, description, provider, photo,
-      price, inStock: in_stock, commission, commissionDiscount,
+      price, coin, inStock: in_stock, commission, commissionDiscount,
       more_than, discount } = req.body;
     const { productId } = req.params;
   
@@ -74,6 +75,7 @@ async function editProduct(req: Request, res: Response) {
       provider: provider ?? product.provider,
       photo: photo ?? product.photo,
       price: price ?? product.price,
+      coin: coin ?? product.coin,
       in_stock: in_stock ?? product.in_stock,
       commission: commission ?? product.commission,
       commissionDiscount: commissionDiscount ?? product.commissionDiscount,

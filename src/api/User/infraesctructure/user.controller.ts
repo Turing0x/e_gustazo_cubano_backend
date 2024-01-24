@@ -130,7 +130,7 @@ async function sign(req: Request, res: Response) {
     const token = jwt.sign(
       { username: user.username, user_id: user._id, enable: user.enable },
       process.env.JWT_KEY_APP,
-      { expiresIn: '100m' }
+      { expiresIn: '7d' }
     )
   
     return goodResponse(res, 'server_mess_3', {

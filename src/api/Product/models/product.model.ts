@@ -4,6 +4,7 @@ export type Product = {
   description: string;
   photo: string;
   price: number;
+  coin: string;
   in_stock: number;
   commission: number;
   commissionDiscount: number;

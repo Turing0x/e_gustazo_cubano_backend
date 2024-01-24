@@ -92,19 +92,21 @@ async function getOrderByPendingNumber(req: Request, res: Response) {
 
 async function saveOrder(req: Request, res: Response) {
   
-  try {
+  // try {
     
-    const { date, product_list, total_amount, commission, seller, buyer } = req.body;
+    const { date, product_list, total_amount, commission, seller, buyer, who_pay, type_coin } = req.body;
     const pending_number: string = uuidv4().split('-')[0].substring(0, 4).toLocaleUpperCase()
 
     const Order = new OrderModel({
       date,
       pending_number,
+      type_coin,
       product_list,
       total_amount,
       commission,
       seller,
-      buyer
+      buyer,
+      who_pay: who_pay ?? {}
     });
 
     await Order.save();
@@ -112,7 +114,7 @@ async function saveOrder(req: Request, res: Response) {
   
     return goodResponse(res, 'order_mess_1');
     
-  } catch (error) { return badResponse(res, 'order_mess_2') }
+  // } catch (error) { return badResponse(res, 'order_mess_2') }
 
 }
 

@@ -50,4 +50,7 @@ export const MESSAGES = {
   product_mess_7: 'Ya existe un producto con ese nombre',
   product_mess_8: 'El producto no ha sido encontrado',
 
+  coin_mess_1: 'Los cambios de monedas se guardaron correctamente',
+  coin_mess_2: 'No se ha podido guardar la información',
+
 }

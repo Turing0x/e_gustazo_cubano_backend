@@ -39,6 +39,14 @@ const OrderSchema = new mongoose.Schema({
   buyer: {
     type: Object,
     require: true,
+  },
+  type_coin: {
+    type: String,
+    require: true,
+  },
+  who_pay: {
+    type: Object,
+    require: true,
   }
 
 });
