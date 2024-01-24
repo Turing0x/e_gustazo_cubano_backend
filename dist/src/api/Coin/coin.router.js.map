@@ -1,0 +1,1 @@
+{"version":3,"file":"coin.router.js","sourceRoot":"","sources":["../../../../src/api/Coin/coin.router.ts"],"names":[],"mappings":";;;AAAA,qCAAiC;AAEjC,wEAAqE;AACrE,uDAAoD;AAEpD,MAAM,MAAM,GAAG,IAAA,gBAAM,GAAE,CAAA;AAEvB,MAAM;KAEH,GAAG,CAAC,GAAG,EAAE,qBAAS,EAAE,iCAAe,CAAC,WAAW,CAAC;KAEhD,IAAI,CAAC,GAAG,EAAE,qBAAS,EAAE,iCAAe,CAAC,QAAQ,CAAC,CAAA;AAEpC,QAAA,UAAU,GAAG,MAAM,CAAA"}

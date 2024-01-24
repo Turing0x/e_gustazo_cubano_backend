@@ -43,6 +43,14 @@ const OrderSchema = new mongoose_1.default.Schema({
     buyer: {
         type: Object,
         require: true,
+    },
+    type_coin: {
+        type: String,
+        require: true,
+    },
+    who_pay: {
+        type: Object,
+        require: true,
     }
 });
 exports.OrderModel = mongoose_1.default.model('Orders', OrderSchema);
