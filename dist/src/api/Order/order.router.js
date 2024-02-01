@@ -9,6 +9,7 @@ router
     .get('/:date', checkAuth_1.checkAuth, order_controller_1.OrderControllers.getAllOrders)
     .get('/getById/:orderId', checkAuth_1.checkAuth, order_controller_1.OrderControllers.getOrderById)
     .get('/pending/:date', checkAuth_1.checkAuth, order_controller_1.OrderControllers.getAllRequested)
+    .get('/getDaily/:date', checkAuth_1.checkAuth, order_controller_1.OrderControllers.getDailyResume)
     .get('/getByComm/:commercialCode/:date', checkAuth_1.checkAuth, order_controller_1.OrderControllers.getRequestedByCommercial)
     .get('/getByCommOrder/:commercialCode/:date', checkAuth_1.checkAuth, order_controller_1.OrderControllers.getOrdersByCommercial)
     .post('/', checkAuth_1.checkAuth, order_controller_1.OrderControllers.saveOrder)

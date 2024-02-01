@@ -90,9 +90,61 @@ async function getOrderByPendingNumber(req: Request, res: Response) {
 
 }
 
+async function getDailyResume(req: Request, res: Response) {
+  
+  try {
+
+    const { date } = req.params;
+    const formatedDate = convertDate(date);
+
+    const map = new Map()
+    const list = []
+
+    const orders = (await OrderModel.find()).filter(
+      order => (order.finish === true) &&
+                (order.date.split(' ')[0] === formatedDate)
+    );
+
+    orders.forEach(order => {
+      for (const prod of order.product_list) {
+        if (!map.has(prod._id)) {
+          map.set(prod._id, {
+            _id: prod._id,
+            name: prod.name,
+            provider: prod.provider,
+            price: prod.price,
+            more_than: prod.more_than,
+            discount: prod.discount,
+            cantToBuy: prod.cantToBuy
+          });
+        } else {
+          const finalcantToBuy = map.get(prod._id).cantToBuy + prod.cantToBuy;
+          map.set(prod._id, {
+            _id: prod._id,
+            name: prod.name,
+            provider: prod.provider,
+            price: prod.price,
+            more_than: prod.more_than,
+            discount: prod.discount,
+            cantToBuy: finalcantToBuy
+          });
+        }
+      }
+    });
+
+    for (const val of map.values()) {
+      list.push(val);
+    }
+    
+    return goodResponse(res, 'crud_mess_0', list);
+    
+  } catch (error) { return badResponse(res, 'order_mess_7', error.message) }
+
+}
+
 async function saveOrder(req: Request, res: Response) {
   
-  // try {
+  try {
     
     const { date, product_list, total_amount, commission, seller, buyer, who_pay, type_coin } = req.body;
     const pending_number: string = uuidv4().split('-')[0].substring(0, 4).toLocaleUpperCase()
@@ -114,7 +166,7 @@ async function saveOrder(req: Request, res: Response) {
   
     return goodResponse(res, 'order_mess_1');
     
-  // } catch (error) { return badResponse(res, 'order_mess_2') }
+  } catch (error) { return badResponse(res, 'order_mess_2') }
 
 }
 
@@ -212,6 +264,7 @@ export const OrderControllers = {
   editProductList,
   deleteOrderById,
   getAllRequested,
+  getDailyResume,
   markAsFinished,
   getAllOrders,
   getOrderById,
