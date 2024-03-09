@@ -1,6 +1,7 @@
 export type Product = {
   id: string;
   name: string;
+  sellType: string,
   description: string;
   photo: string;
   price: number;
@@ -10,4 +11,7 @@ export type Product = {
   commissionDiscount: number;
   more_than: number,
   discount: number,
+  box: number,
+  weigth: number,
+  weigthType: string,
 }
