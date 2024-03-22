@@ -31,12 +31,13 @@ async function saveProduct(req: Request, res: Response) {
   
   try {
 
-    const { name, description, provider, photo,
-      price, coin, inStock: in_stock, commission, commissionDiscount,
+    const { name, description, provider, photo, sellType, box, weigth,
+      weigthType, price, coin, inStock: in_stock, commission, commissionDiscount,
       more_than, discount } = req.body;
   
     const Product = new ProductModel({
       name,
+      sellType,
       description,
       provider,
       photo: photo ?? '',
@@ -46,6 +47,9 @@ async function saveProduct(req: Request, res: Response) {
       commission,
       commissionDiscount,
       discount,
+      box: box ?? '',
+      weigth: weigth ?? '',
+      weigthType: weigthType ?? '',
       more_than
     });
   
@@ -61,8 +65,8 @@ async function editProduct(req: Request, res: Response) {
   
   try {
     
-    const { name, description, provider, photo,
-      price, coin, inStock: in_stock, commission, commissionDiscount,
+    const { name, description, provider, photo, sellType, box, weigth,
+      weigthType, price, coin, inStock: in_stock, commission, commissionDiscount,
       more_than, discount } = req.body;
     const { productId } = req.params;
   
@@ -71,6 +75,10 @@ async function editProduct(req: Request, res: Response) {
     
     const product_obj = {
       name: name ?? product.name,
+      sellType: sellType ?? product.sellType,
+      box: box ?? product.box,
+      weigth: weigth ?? product.weigth,
+      weigthType: weigthType ?? product.weigthType,
       description: description ?? product.description,
       provider: provider ?? product.provider,
       photo: photo ?? product.photo,
