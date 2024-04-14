@@ -30,6 +30,22 @@ const ProductSchema = new mongoose_1.default.Schema({
         type: String,
         require: false,
     },
+    sellType: {
+        type: String,
+        require: false,
+    },
+    box: {
+        type: Number,
+        require: false,
+    },
+    weigth: {
+        type: Number,
+        require: false,
+    },
+    weigthType: {
+        type: String,
+        require: false,
+    },
     in_stock: {
         type: Number,
         require: true,
