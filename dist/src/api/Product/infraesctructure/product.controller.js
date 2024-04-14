@@ -29,9 +29,10 @@ async function getProductById(req, res) {
 }
 async function saveProduct(req, res) {
     try {
-        const { name, description, provider, photo, price, coin, inStock: in_stock, commission, commissionDiscount, more_than, discount } = req.body;
+        const { name, description, provider, photo, sellType, box, weigth, weigthType, price, coin, inStock: in_stock, commission, commissionDiscount, more_than, discount } = req.body;
         const Product = new product_models_1.ProductModel({
             name,
+            sellType,
             description,
             provider,
             photo: photo ?? '',
@@ -41,6 +42,9 @@ async function saveProduct(req, res) {
             commission,
             commissionDiscount,
             discount,
+            box: box ?? '',
+            weigth: weigth ?? '',
+            weigthType: weigthType ?? '',
             more_than
         });
         await Product.save();
@@ -52,13 +56,17 @@ async function saveProduct(req, res) {
 }
 async function editProduct(req, res) {
     try {
-        const { name, description, provider, photo, price, coin, inStock: in_stock, commission, commissionDiscount, more_than, discount } = req.body;
+        const { name, description, provider, photo, sellType, box, weigth, weigthType, price, coin, inStock: in_stock, commission, commissionDiscount, more_than, discount } = req.body;
         const { productId } = req.params;
         const product = await product_models_1.ProductModel.findById(productId);
         if (!product)
             return (0, send_res_1.badResponse)(res, 'product_mess_8');
         const product_obj = {
             name: name ?? product.name,
+            sellType: sellType ?? product.sellType,
+            box: box ?? product.box,
+            weigth: weigth ?? product.weigth,
+            weigthType: weigthType ?? product.weigthType,
             description: description ?? product.description,
             provider: provider ?? product.provider,
             photo: photo ?? product.photo,
