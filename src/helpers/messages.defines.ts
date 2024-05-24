@@ -13,6 +13,7 @@ export const MESSAGES = {
   server_mess_4: 'Error al iniciar sesión, verifique los datos',
 
   server_mess_5: 'Ha ocurrido un problema con el token de acceso',
+  server_mess_50: 'El token de acceso es correcto',
   server_mess_6: 'Este usuario tiene inhabilitado el acceso al sistema',
 
   // Respuestas del CRUD
@@ -52,5 +53,8 @@ export const MESSAGES = {
 
   coin_mess_1: 'Los cambios de monedas se guardaron correctamente',
   coin_mess_2: 'No se ha podido guardar la información',
+
+  cat_mess_1: 'Los cambios en la categoría se guardaron correctamente',
+  cat_mess_2: 'No se ha podido guardar la información',
 
 }

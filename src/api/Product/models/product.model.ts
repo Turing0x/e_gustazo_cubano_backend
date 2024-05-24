@@ -3,6 +3,9 @@ export type Product = {
   name: string;
   sellType: string,
   description: string;
+  provider: string;
+  category: object;
+  subcategory: object;
   photo: string;
   price: number;
   coin: string;

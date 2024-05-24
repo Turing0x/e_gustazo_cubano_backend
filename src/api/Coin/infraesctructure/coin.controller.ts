@@ -14,14 +14,14 @@ async function saveCoin(req: Request, res: Response) {
   
   try {
     
-    const { mlc, usd } = req.body;
+    const { mlc, usd, euro } = req.body;
 
     const getted = await CoinModel.findOne()
     if (getted) {
       
       await CoinModel.updateOne(
         { id: getted.id },
-        {$set: {mlc, usd}}
+        {$set: {mlc, usd, euro}}
       )
 
       return goodResponse(res, 'coin_mess_1');
@@ -30,7 +30,8 @@ async function saveCoin(req: Request, res: Response) {
     
     const Coin = new CoinModel({
       mlc,
-      usd
+      usd,
+      euro
     });
     
     await Coin.save();

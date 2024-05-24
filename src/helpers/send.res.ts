@@ -11,6 +11,7 @@ export const badResponse = (
   status?: number) => {
   
   res.status(status ?? 500).json({
+    status: 500,
     api_message: MESSAGES[message],
     data
   }).end()
@@ -22,6 +23,7 @@ export const goodResponse = (
   data: any = '' ) => {
   
   res.status(200).json({
+    status: 200,
     api_message: MESSAGES[message],
     data
   }).end()

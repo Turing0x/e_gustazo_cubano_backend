@@ -10,6 +10,10 @@ const CoinSchema = new mongoose.Schema({
     type: Number,
     require: true,
   },
+  euro: {
+    type: Number,
+    require: true,
+  },
 
 });
 

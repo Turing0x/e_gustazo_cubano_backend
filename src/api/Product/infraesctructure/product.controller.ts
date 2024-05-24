@@ -5,9 +5,32 @@ import { goodResponse, badResponse } from '../../../helpers/send.res';
 
 async function getAllProducts(req: Request, res: Response) {
   try {
+
     const products = (await ProductModel.find())
       .filter( product => product.in_stock !== 0 );
     return goodResponse(res, 'crud_mess_0', products)
+    
+  } catch (error) { return badResponse(res, 'mess_0', error.message) }
+}
+
+async function getProductsToExibition(req: Request, res: Response) {
+  try {
+    const products = await ProductModel.find()
+
+    const cleanedProducts = []
+    products.forEach(prod => {
+      cleanedProducts.push({
+        _id: prod._id,
+        name: prod.name,
+        provider: prod.provider,
+        photo: prod.photo,
+        price: prod.price,
+        in_stock: prod.in_stock,
+        category: prod.category,
+      })
+    });
+
+    return goodResponse(res, 'crud_mess_0', cleanedProducts)
   } catch (error) { return badResponse(res, 'mess_0', error.message) }
 }
 
@@ -31,14 +54,16 @@ async function saveProduct(req: Request, res: Response) {
   
   try {
 
-    const { name, description, provider, photo, sellType, box, weigth,
-      weigthType, price, coin, inStock: in_stock, commission, commissionDiscount,
-      more_than, discount } = req.body;
+    const { name, description, provider, photo, sellType, box, weigth, category, subcategory,
+    weigthType, price, coin, inStock: in_stock, commission, commissionDiscount,
+    more_than, discount } = req.body;
   
     const Product = new ProductModel({
       name,
       sellType,
       description,
+      category,
+      subcategory,
       provider,
       photo: photo ?? '',
       price,
@@ -54,10 +79,13 @@ async function saveProduct(req: Request, res: Response) {
     });
   
     await Product.save();
-  
+      
     return goodResponse(res, 'product_mess_1');
 
-  } catch (error) { return badResponse(res, 'product_mess_2', error.message) }
+  } catch (error) {
+    console.log(error);
+    return badResponse(res, 'product_mess_2', error.message)
+  }
 
 }
 
@@ -65,7 +93,7 @@ async function editProduct(req: Request, res: Response) {
   
   try {
     
-    const { name, description, provider, photo, sellType, box, weigth,
+    const { name, description, provider, photo, sellType, box, weigth, category, subcategory,
       weigthType, price, coin, inStock: in_stock, commission, commissionDiscount,
       more_than, discount } = req.body;
     const { productId } = req.params;
@@ -80,6 +108,8 @@ async function editProduct(req: Request, res: Response) {
       weigth: weigth ?? product.weigth,
       weigthType: weigthType ?? product.weigthType,
       description: description ?? product.description,
+      category: category ?? product.category,
+      subcategory: subcategory ?? product.subcategory,
       provider: provider ?? product.provider,
       photo: photo ?? product.photo,
       price: price ?? product.price,
@@ -115,6 +145,7 @@ async function deleteProductById(req: Request, res: Response) {
 }
 
 export const ProductControllers = {
+  getProductsToExibition,
   deleteProductById,
   getAllProducts,
   getProductById,

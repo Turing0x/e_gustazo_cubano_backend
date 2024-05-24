@@ -15,8 +15,10 @@ router
   .post('/signin', UserControllers.sign)
   .post('/resetpass', checkAuth, UserControllers.resetPassword)
   .post('/changePassword', checkAuth, UserControllers.changePassword)
+  .post('/tokenVerify', UserControllers.tokenVerify)
 
-  .put('/changeEnable/:id', checkAuth, UserControllers.editUserEnable)
+  .put('/:userId', checkAuth, UserControllers.editUser)
+  .put('/changeEnable/:userId', checkAuth, UserControllers.editUserEnable)
 
   .delete('/:userId', checkAuth, UserControllers.deleteUserById)
 export const UserRouter = router

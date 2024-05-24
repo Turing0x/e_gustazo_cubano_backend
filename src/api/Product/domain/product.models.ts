@@ -10,6 +10,14 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     require: false
   },
+  category: {
+    type: Object,
+    require: false
+  },
+  subcategory: {
+    type: Object,
+    require: false
+  },
   provider: {
     type: String,
     require: false
