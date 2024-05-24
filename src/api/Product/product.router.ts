@@ -7,7 +7,8 @@ const router = Router()
 
 router
 
-  .get('/', checkAuth, ProductControllers.getAllProducts)
+  .get('/', ProductControllers.getAllProducts)
+  .get('/exh', ProductControllers.getProductsToExibition)
   .get('/:productId', checkAuth, ProductControllers.getProductById)
 
   .post('/', checkAuth, ProductControllers.saveProduct)

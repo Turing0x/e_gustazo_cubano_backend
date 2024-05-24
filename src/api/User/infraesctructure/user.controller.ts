@@ -82,14 +82,14 @@ async function saveUser(req: Request, res: Response) {
   
   try {
 
-    const { fullname, ci, address, phoneNumber } = req.body;
+    const { full_name, ci, address, phone } = req.body;
   
-    if (await UserModel.findOne({ 'personal_info.full_name': fullname })) {
+    if (await UserModel.findOne({ 'personal_info.full_name': full_name })) {
       return badResponse(res, 'user_mess_7');
     }
 
     const password = ci.substring(6)
-    const username = `${fullname.split(' ')[0].toLowerCase()}${ci.substring(0, 2)}`
+    const username = `${full_name.split(' ')[0].toLowerCase()}${ci.substring(0, 2)}`
 
     const hashPassword = bcrypt.hashSync(password, 10);
     const commercial_code: string = uuidv4().split('-')[0].toLocaleUpperCase()
@@ -99,9 +99,9 @@ async function saveUser(req: Request, res: Response) {
       password: hashPassword,
       personal_info: {
         ci: ci,
-        full_name: fullname,
+        full_name,
         address: address,
-        phone: phoneNumber
+        phone
       },
       role: 'commercial',
       commercial_code
@@ -111,7 +111,10 @@ async function saveUser(req: Request, res: Response) {
   
     return goodResponse(res, 'user_mess_1');
     
-  } catch (error) { return badResponse(res, 'mess_0', error.message) }
+  } catch (error) {
+    console.log(error);
+    return badResponse(res, 'mess_0', error.message)
+  }
 
 }
 
@@ -134,16 +137,18 @@ async function sign(req: Request, res: Response) {
     )
   
     return goodResponse(res, 'server_mess_3', {
-      userID: user._id,
-      commercialCode: user.commercial_code,
-      info: {
-        ci: user.personal_info.ci,
-        full_name: user.personal_info.full_name,
-        phone: user.personal_info.phone,
-        address: user.personal_info.address
-      } ,
+      user: {
+        userID: user._id,
+        commercialCode: user.commercial_code,
+        info: {
+          ci: user.personal_info.ci,
+          full_name: user.personal_info.full_name,
+          phone: user.personal_info.phone,
+          address: user.personal_info.address
+        } ,
+        role: user.role.toLocaleLowerCase()
+      },
       token,
-      role: user.role.toLocaleLowerCase()
     });
     
   } catch (error) { return badResponse(res, 'mess_0', error.message) }
@@ -164,6 +169,33 @@ async function editUserEnable(req: Request, res: Response) {
     return goodResponse(res, 'user_mess_3')
 
   } catch (error) { return badResponse(res, 'mess_0', error.message) }
+
+}
+
+async function editUser(req: Request, res: Response) {
+  
+  try {
+    
+    const { full_name, ci, address, phone } = req.body;
+    const { userId } = req.params;
+  
+    const product = await UserModel.findById(userId)
+    if (!product) return badResponse(res, 'product_mess_8'); 
+    
+    const user_obj = {
+      personal_info: {
+        full_name: full_name ?? product.personal_info.full_name,
+        ci: ci ?? product.personal_info.ci,
+        address: address ?? product.personal_info.address,
+        phone: phone ?? product.personal_info.phone,
+      }
+    };
+  
+    await UserModel.findByIdAndUpdate(userId, user_obj)
+  
+    return goodResponse(res, 'user_mess_3');
+    
+  } catch (error) { return badResponse(res, 'user_mess_4', error.message) }
 
 }
 
@@ -225,6 +257,39 @@ async function deleteUserById(req: Request, res: Response) {
 
 }
 
+async function tokenVerify(req: Request, res: Response) {
+  
+  try {
+
+    const token: string = req.headers['access-token'] as string
+    const decoded = jwt.verify(token, process.env.JWT_KEY_APP) as object
+
+    const user = await UserModel.findOne({ username: decoded['username'] });
+    const newToken = jwt.sign(
+      { username: user.username, user_id: user._id, enable: user.enable },
+      process.env.JWT_KEY_APP,
+      { expiresIn: '7d' }
+    )
+
+    return goodResponse(res, 'server_mess_50', {
+      user: {
+        userID: user._id,
+        commercialCode: user.commercial_code,
+        info: {
+          ci: user.personal_info.ci,
+          full_name: user.personal_info.full_name,
+          phone: user.personal_info.phone,
+          address: user.personal_info.address
+        } ,
+        role: user.role.toLocaleLowerCase()
+      },
+      token: newToken,
+    });
+
+  } catch (error) { return badResponse(res, 'mess_0', error.message) }
+
+}
+
 export const UserControllers = {
   getCommisionByCommercial,
   deleteUserById,
@@ -233,6 +298,8 @@ export const UserControllers = {
   resetPassword,
   getUserById,
   getAllUsers,
+  tokenVerify,
+  editUser,
   saveUser,
   sign
 }
