@@ -5,6 +5,7 @@ export type User = {
   role: string;
   owner: string;
   commercial_code: string;
+  myPeople: string;
   personal_info: {
     ci: string,
     full_name: string,

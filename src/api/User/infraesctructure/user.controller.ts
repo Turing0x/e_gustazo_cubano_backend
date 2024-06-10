@@ -10,8 +10,17 @@ import { RoleModel } from '../../Role/domain/role.models';
 async function getAllUsers(req: Request, res: Response) {
 
   try {
-    const users = (await UserModel.find({role: 'commercial'}))
-    return goodResponse(res, 'crud_mess_0', users)
+    
+    const list = [];
+    const user = await UserModel.findOne(
+      { _id: res['userData']['user_id'] })
+
+    for (const each of user.myPeople) {
+      const user = await UserModel.findById(each);
+      if(user){ list.push(user); }
+    }
+
+    return goodResponse(res, 'crud_mess_0', list)
   } catch (error) { return badResponse(res, 'mess_0', error.message) }
 
 }

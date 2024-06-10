@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
     require: false,
   },
   myPeople: {
-    type: mongoose.Types.ObjectId,
+    type: Array,
     require: false,
   },
   commercial_code: {
