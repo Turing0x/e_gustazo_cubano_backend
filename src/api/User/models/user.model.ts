@@ -3,6 +3,7 @@ export type User = {
   username: string;
   password: string;
   role: string;
+  owner: string;
   commercial_code: string;
   personal_info: {
     ci: string,

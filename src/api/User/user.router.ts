@@ -9,13 +9,11 @@ router
 
   .get('/', checkAuth, UserControllers.getAllUsers)
   .get('/:userId', checkAuth, UserControllers.getUserById)
-  .get('/orders/:userId', checkAuth, UserControllers.getCommisionByCommercial)
 
-  .post('/', checkAuth, UserControllers.saveUser)
+  .post('/', UserControllers.saveUser)
   .post('/signin', UserControllers.sign)
   .post('/resetpass', checkAuth, UserControllers.resetPassword)
   .post('/changePassword', checkAuth, UserControllers.changePassword)
-  .post('/tokenVerify', UserControllers.tokenVerify)
 
   .put('/:userId', checkAuth, UserControllers.editUser)
   .put('/changeEnable/:userId', checkAuth, UserControllers.editUserEnable)

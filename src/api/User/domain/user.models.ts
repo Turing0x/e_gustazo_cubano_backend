@@ -19,6 +19,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  owner: {
+    type: mongoose.Types.ObjectId,
+    require: false,
+  },
+  myPeople: {
+    type: mongoose.Types.ObjectId,
+    require: false,
+  },
   commercial_code: {
     type: String,
     require: false,

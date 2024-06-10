@@ -8,7 +8,6 @@ export function dbConnection() {
     console.clear()
     console.log('Base de datos Online')
   } catch (error) {
-    console.log(error)
     throw new Error('Error en la base de datos')
   }
 }

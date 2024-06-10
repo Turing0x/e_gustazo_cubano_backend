@@ -16,9 +16,6 @@ router
 
   .post('/', checkAuth, OrderControllers.saveOrder)
 
-  .put('/:orderId', checkAuth, OrderControllers.editProductList)
-  .put('/:orderId/:invoiceNumber', checkAuth, OrderControllers.markAsFinished)
-
   .delete('/:orderId', checkAuth, OrderControllers.deleteOrderById)
 
 export const OrderRouter = router

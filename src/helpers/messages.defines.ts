@@ -57,4 +57,6 @@ export const MESSAGES = {
   cat_mess_1: 'Los cambios en la categoría se guardaron correctamente',
   cat_mess_2: 'No se ha podido guardar la información',
 
+  role_mess_1: 'Rol creado',
+
 }

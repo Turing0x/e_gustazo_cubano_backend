@@ -83,7 +83,6 @@ async function saveProduct(req: Request, res: Response) {
     return goodResponse(res, 'product_mess_1');
 
   } catch (error) {
-    console.log(error);
     return badResponse(res, 'product_mess_2', error.message)
   }
 

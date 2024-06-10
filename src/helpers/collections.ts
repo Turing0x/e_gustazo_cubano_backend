@@ -4,4 +4,5 @@ export = {
   PRODUCTS: 'products',
   ORDER: 'orders',
   COIN: 'coins',
+  ROLE: 'roles',
 }
