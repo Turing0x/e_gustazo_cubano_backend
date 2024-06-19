@@ -121,7 +121,6 @@ async function sign(req: Request, res: Response) {
       ci: user.personal_info.ci,
       full_name: user.personal_info.full_name,
       phone: user.personal_info.phone,
-      address: user.personal_info.address,
       role: user.role.toLocaleLowerCase(),
       token,
     });
