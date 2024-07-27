@@ -11,11 +11,13 @@ const ProductSchema = new mongoose.Schema({
     require: false
   },
   category: {
-    type: Object,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'category',
     require: false
   },
   subcategory: {
-    type: Object,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'subcat',
     require: false
   },
   provider: {
@@ -24,51 +26,55 @@ const ProductSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    require: true,
+    default: '',
+    require: true
   },
   price: {
     type: Number,
-    require: false,
+    require: false
   },
   coin: {
     type: String,
-    require: false,
+    require: false
   },
   sellType: {
     type: String,
-    require: false,
+    require: false
   },
   box: {
     type: Number,
-    require: false,
+    default: '',
+    require: false
   },
   weigth: {
     type: Number,
-    require: false,
+    default: '',
+    require: false
   },
   weigthType: {
     type: String,
-    require: false,
+    default: '',
+    require: false
   },
   in_stock: {
     type: Number,
-    require: true,
+    require: true
   },
   commission: {
     type: Number,
-    require: true,
+    require: true
   },
   commissionDiscount: {
     type: Number,
-    require: true,
+    require: true
   },
   more_than: {
     type: Number,
-    require: false,
+    require: false
   },
   discount: {
     type: Number,
-    require: false,
+    require: false
   }
 
 });

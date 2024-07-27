@@ -2,20 +2,24 @@ import { Response, Request } from 'express';
 
 import { ProductModel } from '../domain/product.models';
 import { goodResponse, badResponse } from '../../../helpers/send.res';
+import { Product } from '../models/product.model';
 
 async function getAllProducts(req: Request, res: Response) {
   try {
 
-    const products = (await ProductModel.find())
+    const products = (await ProductModel.find()
+      .populate('category', 'name'))
       .filter( product => product.in_stock !== 0 );
-    return goodResponse(res, 'crud_mess_0', products)
+
+    return goodResponse(res, 'crud_mess_0', products);
     
-  } catch (error) { return badResponse(res, 'mess_0', error.message) }
+  } catch (error) { return badResponse(res, 'mess_0', error.message); }
 }
 
 async function getProductsToExibition(req: Request, res: Response) {
   try {
-    const products = await ProductModel.find()
+    const products = await ProductModel.find().populate(
+      ['category', 'subcategory'])
 
     const cleanedProducts = []
     products.forEach(prod => {
@@ -41,7 +45,8 @@ async function getProductById(req: Request, res: Response) {
     const { productId } = req.params;
     if( !productId ) return badResponse(res, 'mess_1'); 
 
-    const product = await ProductModel.findById(productId);
+    const product = await ProductModel.findById(productId).populate(
+      ['category', 'subcategory']);
     if (!product) return badResponse(res, 'product_mess_8'); 
     
     return goodResponse(res, 'crud_mess_0', product);
@@ -54,32 +59,11 @@ async function saveProduct(req: Request, res: Response) {
   
   try {
 
-    const { name, description, provider, photo, sellType, box, weigth, category, subcategory,
-    weigthType, price, coin, inStock: in_stock, commission, commissionDiscount,
-    more_than, discount } = req.body;
+    const prod: Product = req.body;
   
-    const Product = new ProductModel({
-      name,
-      sellType,
-      description,
-      category,
-      subcategory,
-      provider,
-      photo: photo ?? '',
-      price,
-      coin,
-      in_stock,
-      commission,
-      commissionDiscount,
-      discount,
-      box: box ?? '',
-      weigth: weigth ?? '',
-      weigthType: weigthType ?? '',
-      more_than
-    });
-  
+    const Product = new ProductModel(prod);
     await Product.save();
-      
+
     return goodResponse(res, 'product_mess_1');
 
   } catch (error) {

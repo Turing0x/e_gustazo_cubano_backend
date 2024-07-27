@@ -1,22 +1,37 @@
 import jwt from 'jsonwebtoken';
 
-import { UserModel } from '../api/User/domain/user.models';
+import { Request, Response, NextFunction } from 'express';
 import { badResponse } from './send.res';
-import { Request, Response, NextFunction } from 'express-serve-static-core';
 
-export async function checkAuth (req: Request, res: Response, next: NextFunction) {
+export async function checkAuth(req: CustomRequest, res: Response, next: NextFunction) {
+
   try {
-    const token: string = req.headers['access-token'] as string
-    const decoded = jwt.verify(token, process.env.JWT_KEY_APP) as object
 
-    const { enable, role } = await UserModel.findOne({ _id: decoded['user_id'] })
-      .select(['_id', 'username', 'enable', 'role'])
-      .populate('role')
+    const token: string = req.headers['access-token'] as string;
+    if (!token) return badResponse(res, 'server_mess_5');
 
-    if (enable) {
-      res['userData'] = { role, ...decoded }
-      return next()
-    }
+    const { username, id, entity } = jwt.verify(token, (process.env.JWT_KEY_APP || '')
+      ) as { id: string, username: string, entity: string };
 
-  } catch (error) { return badResponse(res, 'server_mess_5', error.message, 401) }
+    req.userData = { id, username, entity };
+
+    return next();
+
+  } catch (error) {
+    return badResponse(res, 'server_mess_5');
+  }
+}
+
+export interface CustomRequest extends Request {
+  id?: string; username?: string;
+}
+  
+declare module 'express' {
+  interface Request {
+    userData?: {
+      id: string;
+      username: string;
+      entity: string;
+    };
+  }
 }
